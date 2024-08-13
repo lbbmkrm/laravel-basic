@@ -16,7 +16,7 @@ class EnvironmentTest extends TestCase
 
     public function testDefaultEnv()
     {
-        $author = env('author', 'lbbmkrm');
+        $author = Env('author', 'lbbmkrm');
         self::assertEquals("lbbmkrm", $author);
     }
 }
