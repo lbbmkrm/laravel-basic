@@ -26,3 +26,13 @@ Route::redirect('/redirect', '/lbb');
 Route::fallback(function () {
     return '404 Web not found';
 });
+
+Route::view('/hello', 'hello', ['name' => 'anto']); //menampilkan view. isi parameter (path,file,isi)
+Route::get('/hello-again', function () {
+    return view('hello', ['name' => 'again']);
+}); //menampilkan view juga
+
+
+Route::get('/hello-world', function () {
+    return view('hello.world', ['name' => 'world']);
+});
