@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use function PHPUnit\Framework\isNull;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,7 +21,7 @@ Route::get('/', function () {
 
 Route::get('/lbb', function () {
     return "Hello";
-});
+})->name('lbb.detail'); //menambahkan nama sebuah route agar mudah diakses 
 
 Route::redirect('/redirect', '/lbb');
 
@@ -35,4 +37,37 @@ Route::get('/hello-again', function () {
 
 Route::get('/hello-world', function () {
     return view('hello.world', ['name' => 'world']);
+});
+
+Route::get('/products/{id}', function ($productId) {
+    return 'Product id : ' . $productId;
+})->name('product.detail');
+
+Route::get('/products/{id}/items/{itemId}', function ($productId, $itemId) {
+    return "Product id : $productId, Item id : $itemId";
+});
+
+Route::get('/categories/{id}', function ($categoriesId) {
+    return "Category : $categoriesId";
+})->where('id', '[0-9]+')->name('category.detail'); //route dengan parameter regex
+
+Route::get('/users/{id?}', function ($userId = null) { //membuat parameter menjadi opsional tetapi harus menambahkan
+    if (is_null($userId)) {                             //default value nya dan {value?}
+        return "User id is null";
+    } else {
+        return "User id : $userId";
+    }
+})->name('user.detail');
+
+
+Route::get('/produk/{id}', function ($id) {
+    $link = route('product.detail', [ //memanggil route dengan named route, 
+        'id' => $id                     //route('_namedrout',['_paramnamedroute' => $paraminclosure])
+    ]);
+    return "Link $link";
+});
+
+
+Route::get('/produk-redirect/{id}', function ($id) {
+    return redirect()->route('product.detail', ['id' => $id]);
 });

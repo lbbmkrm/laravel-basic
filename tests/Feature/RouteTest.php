@@ -25,4 +25,38 @@ class RouteTest extends TestCase
         $this->get('/tidakada')
             ->assertSeeText('404 Web not found');
     }
+
+    public function testUrlParameter()
+    {
+        $this->get('/products/1')
+            ->assertSeeText('Product id : 1');
+        $this->get('/products/1/items/2')
+            ->assertSeeText('Product id : 1, Item id : 2');
+    }
+
+    public function testParameterRegex()
+    {
+        $this->get('/categories/123')
+            ->assertSeeText('Category : 123');
+
+        $this->get('categories/anto')
+            ->assertSeeText('404 Web not found');
+    }
+
+    public function testOptionalParam()
+    {
+        $this->get('/users/123')
+            ->assertSeeText("User id : 123");
+        $this->get('users')
+            ->assertSeeText('User id is null');
+    }
+
+    public function testNamedRoute()
+    {
+        $this->get('/produk/12345')
+            ->assertSeeText('Link http://localhost/products/12345');
+
+        $this->get('produk-redirect/123456')
+            ->assertRedirect('/products/123456');
+    }
 }
