@@ -6,15 +6,14 @@ use App\Data\Bar;
 use Illuminate\Support\ServiceProvider;
 use App\Data\Foo;
 use App\Service\HelloService;
+use App\Service\HelloServiceInd;
 use Illuminate\Contracts\Support\DeferrableProvider;
 
 class FooBarServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    /**
-     * Register services.
-     *
-     * @return void
-     */
+    public array $singletons = [
+        HelloService::class => HelloServiceInd::class
+    ];
     public function register()
     {
         $this->app->singleton(Foo::class, function ($app) {
