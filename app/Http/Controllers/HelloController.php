@@ -13,12 +13,23 @@ class HelloController extends Controller
         $this->helloService = $helloService;
     }
 
-    public function helloLangInd(string $name): string
+    public function helloLangInd(Request $request, string $name): string
     {
+        // $request->path();
+        // $request->url();
+        // $request->fullUrl();
         return $this->helloService->hello($name);
     }
     public function Hello(): string
     {
         return "Hello world!";
+    }
+    public function request(Request $request): string
+    {
+        return $request->path() . "\n" .
+            $request->url() . "\n" .
+            $request->fullUrl() . "\n" .
+            $request->method() . "\n" .
+            $request->header('Accept') . "\n";
     }
 }

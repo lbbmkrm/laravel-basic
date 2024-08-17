@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HelloController;
+use App\Http\Controllers\InputController;
 use Illuminate\Support\Facades\Route;
 
 use function PHPUnit\Framework\isNull;
@@ -26,9 +27,9 @@ Route::get('/lbb', function () {
 
 Route::redirect('/redirect', '/lbb');
 
-Route::fallback(function () {
-    return '404 Web not found';
-});
+// Route::fallback(function () {
+//     return '404 Web not found';
+// });
 
 Route::view('/hello', 'hello', ['name' => 'anto']); //menampilkan view. isi parameter (path,file,isi)
 Route::get('/hello-again', function () {
@@ -75,4 +76,15 @@ Route::get('/produk-redirect/{id}', function ($id) {
 
 
 Route::get('/controller/hello', [HelloController::class, 'hello']);
+Route::get('/controller/hello/request', [HelloController::class, 'request']);
 Route::get('/controller/hello/{name}', [HelloController::class, 'helloLangInd']);
+
+
+Route::get('/controller/input', [InputController::class, 'hello']);
+Route::post('/controller/input', [InputController::class, 'hello']);
+Route::post('/controller/input/first', [InputController::class, 'helloFirstName']);
+Route::post('/controller/input/get-all', [InputController::class, 'getAllInput']);
+Route::post('/controller/input/type', [InputController::class, 'inputType']);
+Route::post('/controller/input/filter/only', [InputController::class, 'inputFilterOnly']);
+Route::post('/controller/input/filter/except', [InputController::class, 'inputFilterExcept']);
+Route::post('/controller/input/filter/merge', [InputController::class, 'inputFilterMerge']);
