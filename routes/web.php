@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\HelloController;
 use App\Http\Controllers\InputController;
 use Illuminate\Support\Facades\Route;
@@ -88,3 +89,6 @@ Route::post('/controller/input/type', [InputController::class, 'inputType']);
 Route::post('/controller/input/filter/only', [InputController::class, 'inputFilterOnly']);
 Route::post('/controller/input/filter/except', [InputController::class, 'inputFilterExcept']);
 Route::post('/controller/input/filter/merge', [InputController::class, 'inputFilterMerge']);
+
+
+Route::post('/file/upload', [FileController::class, 'upload']);
