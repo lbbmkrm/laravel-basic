@@ -6,6 +6,7 @@ use App\Http\Controllers\HelloController;
 use App\Http\Controllers\InputController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\ResponseController;
+use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 use function PHPUnit\Framework\isNull;
@@ -94,7 +95,8 @@ Route::post('/controller/input/filter/except', [InputController::class, 'inputFi
 Route::post('/controller/input/filter/merge', [InputController::class, 'inputFilterMerge']);
 
 
-Route::post('/file/upload', [FileController::class, 'upload']);
+Route::post('/file/upload', [FileController::class, 'upload'])
+    ->withoutMiddleware([VerifyCsrfToken::class]); //meng exclude middleware yang tidak dibutuhkan
 
 
 Route::get('/response/hello', [ResponseController::class, 'response']);
@@ -116,3 +118,12 @@ Route::get('/redirect/name/{name}', [RedirectController::class, 'redirectHello']
     ->name("redirect-hello");
 
 Route::get("redirect/away", [RedirectController::class, "redirectAway"]);
+
+Route::get('/middleware/api', function () {
+    return "ok";
+})->middleware(["contoh.middleware:KEY,401"]);
+
+
+Route::get("/middleware/group", function () {
+    return "group";
+})->middleware(["example"]);
