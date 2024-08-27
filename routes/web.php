@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\ValidationException;
 use App\Http\Controllers\CookieController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\FormController;
@@ -149,3 +150,17 @@ Route::get("/url/current", function () {
 
 Route::get("/session/create", [SessionController::class, 'createSession']);
 Route::get("/session/get", [SessionController::class, "getSession"]);
+
+
+Route::get("/error/sample", function () {
+    throw new Exception("Sample Error");
+});
+
+
+Route::get("/error/manual", function () {
+    report(new Exception("sample error")); //akan mentrigger reportable di class handler
+    return "ok";
+});
+Route::get("/error/validation", function () {
+    throw new ValidationException("Validation error");
+});
