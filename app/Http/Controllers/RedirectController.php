@@ -28,6 +28,11 @@ class RedirectController extends Controller
         return "Hello $name";
     }
 
+    public function redirectAction()
+    {
+        return redirect()->action([RedirectController::class, 'redirectHello'], ['name' => 'anto']);
+    }
+
     public function redirectAway(): RedirectResponse
     {
         return redirect()->away("https://github.com/lbbmkrm");

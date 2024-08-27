@@ -21,7 +21,7 @@ class ContohMiddlewareTest extends TestCase
             "X-API-KEY" => "KEY"
         ])->get('/middleware/api')
             ->assertStatus(200)
-            ->assertSeeText("ok");
+            ->assertSeeText("OK!");
     }
     public function testInvalidGroup()
     {
@@ -36,6 +36,6 @@ class ContohMiddlewareTest extends TestCase
             "X-API-KEY" => "KEY"
         ])->get('/middleware/group')
             ->assertStatus(200)
-            ->assertSeeText("group");
+            ->assertSeeText("Group!");
     }
 }

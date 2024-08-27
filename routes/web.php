@@ -2,12 +2,14 @@
 
 use App\Http\Controllers\CookieController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\FormController;
 use App\Http\Controllers\HelloController;
 use App\Http\Controllers\InputController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\ResponseController;
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 use function PHPUnit\Framework\isNull;
 
@@ -99,16 +101,20 @@ Route::post('/file/upload', [FileController::class, 'upload'])
     ->withoutMiddleware([VerifyCsrfToken::class]); //meng exclude middleware yang tidak dibutuhkan
 
 
-Route::get('/response/hello', [ResponseController::class, 'response']);
-Route::get('/response/header', [ResponseController::class, 'header']);
-Route::get('/response/view', [ResponseController::class, 'responseView']);
-Route::get('/response/json', [ResponseController::class, 'responseJson']);
-Route::get('/response/file', [ResponseController::class, 'responseFile']);
-Route::get('/response/download', [ResponseController::class, 'responseDownload']);
+Route::prefix("/response")->group(function () { //jika memiliki awalan path yang sama bisa di group
+    Route::get('/hello', [ResponseController::class, 'response']);
+    Route::get('/header', [ResponseController::class, 'header']);
+    Route::get('/view', [ResponseController::class, 'responseView']);
+    Route::get('/json', [ResponseController::class, 'responseJson']);
+    Route::get('/file', [ResponseController::class, 'responseFile']);
+    Route::get('/download', [ResponseController::class, 'responseDownload']);
+}); // disebut Prefix / awalan
 
-Route::get('/cookie', [CookieController::class, 'createCookie']);
-Route::get('/cookie/get', [CookieController::class, 'getCookie']);
-Route::get('/cookie/clear', [CookieController::class, 'clearCookie']);
+Route::controller(CookieController::class)->group(function () {
+    Route::get('/cookie', 'createCookie');
+    Route::get('/cookie/get', 'getCookie');
+    Route::get('/cookie/clear', 'clearCookie');
+}); //group jika memiliki class controller yang sama 
 
 
 Route::get('/redirect/from', [RedirectController::class, 'redirectFrom']);
@@ -116,14 +122,25 @@ Route::get('/redirect/to', [RedirectController::class, 'redirectTo']);
 Route::get('/redirect/name', [RedirectController::class, 'redirectName']);
 Route::get('/redirect/name/{name}', [RedirectController::class, 'redirectHello'])
     ->name("redirect-hello");
+Route::get('/redirect/action', [RedirectController::class, 'redirectAction']);
 
 Route::get("redirect/away", [RedirectController::class, "redirectAway"]);
 
-Route::get('/middleware/api', function () {
-    return "ok";
-})->middleware(["contoh.middleware:KEY,401"]);
+Route::middleware(['contoh.middleware:KEY,401'])->prefix("/middleware")->group(function () {
+    Route::get("/api", function () {
+        return "OK!";
+    });
+    Route::get("/group", function () {
+        return "Group!";
+    });
+});
 
 
-Route::get("/middleware/group", function () {
-    return "group";
-})->middleware(["example"]);
+Route::controller(FormController::class)->group(function () {
+    Route::get("/form",  "form");
+    Route::post("/form",  "submitForm");
+});
+
+Route::get("/url/current", function () {
+    return URL::full();
+});

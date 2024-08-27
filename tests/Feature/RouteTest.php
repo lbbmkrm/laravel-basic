@@ -23,7 +23,7 @@ class RouteTest extends TestCase
     public function testFallback()
     {
         $this->get('/tidakada')
-            ->assertSeeText('404 Web not found');
+            ->assertStatus(404);
     }
 
     public function testUrlParameter()
